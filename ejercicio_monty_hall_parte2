@@ -1,0 +1,74 @@
+#Importamos librerías
+import numpy as np
+
+#Variables input para la simulación
+N = 1000 # Cantidad de simulaciones
+
+#Creamos e Iniciamos variables en cero o sin nada
+no_change = 0 # Cantidad de veces que me llevo el auto sin cambiar de puerta
+change = 0 # Cantidad de veces que me llevo el auto cambiando de puerta
+rand_sel = 0 # Cantidad de veces que me llevo el auto eligiendo al azar entre las dos puertas restantes
+
+# Hits acumulados
+change_acum = 0
+no_change_acum = 0
+rand_sel_acum = 0
+
+# Ubicación del auto (una de las 3 puertas al azar)
+car_pos = np.random.randint(3, size=N)
+# Selecciono una puerta al azar
+selected_door = np.random.randint(3,size=N)
+
+#Program
+for i in range(N):
+    doors = [0,1,2] # Lista con las 3 opciones de puertas
+    doors.remove(selected_door[i]) # Me quedo con las dos puertas que no elegí
+
+    # Caso No cambio de puerta y era la puerta donde estaba el auto, sumo uno a la variable correspondiente
+    if selected_door[i] == car_pos[i]:
+        no_change_acum = no_change_acum + 1
+        # Abro cualquiera de las dos puertas restantes. Elijo una de los dos restantes al azar
+        doors.pop(np.random.randint(2))
+    else:
+        # Remuevo la puerta que tiene el auto. No la puedo abrir
+        doors.remove(car_pos[i])
+
+        # Solo me me queda una puerta para abrir
+    door_to_open = doors[0]
+
+    #Genero la puerta del cambio
+    selected_door_change = [0, 1, 2] # Inicialmente contiene las 3 puertas pero me tengo que quedar con la puerta que elijo si cambio
+    # Remuevo la que abrio y me quedo con las dos posibles
+    selected_door_change.remove(door_to_open)
+
+    # Caso elijo al azar: entre las dos puertas restantes y coincide con el auto. Sumo uno a la variable correspondiente
+    if selected_door_change[np.random.randint(2)] == car_pos[i]:
+        rand_sel_acum = rand_sel_acum + 1
+
+    #Caso cambio de puerta: Remuevo la que elegi primero ya que ahora cambié (cambio de puerta)
+    #print("Intentamos remover: ",selected_door[i], "de: ",  selected_door_change)
+    selected_door_change.remove(selected_door[i])
+
+
+    # Si coinciden la que elegí cambiando con la del auto. Sumo uno a la variable correspondiente
+    if selected_door_change == car_pos[i]:
+        change_acum = change_acum + 1
+
+print(change_acum, no_change_acum, rand_sel_acum)
+
+
+#----------#
+# Graficos #
+#----------#
+
+#Importamos modulo para gráficos
+from matplotlib import pyplot as plt
+
+plt.figure(figsize=(16,8))
+plt.plot(no_change_acum, label='No cambio')
+plt.plot(change_acum, label='Cambio')
+plt.plot(rand_sel_acum, label='Al azar')
+plt.xlabel('Iteración')
+plt.ylabel('hits')
+plt.legend()
+plt.show()

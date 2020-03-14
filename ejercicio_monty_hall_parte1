@@ -1,0 +1,25 @@
+#Monty hall
+#Simulacion que muestra que pasa si cambiamos o no de elección
+
+#Importamos librerías
+import numpy as np
+
+#Cantidad de simulaciones
+N = 100
+
+#Creamos arrays aleatorios de lo que hubiera sido la elección inicial del participante y la ubicación del auto para así simular
+car_pos = np.random.randint(0,high=3,size=N)
+selection = np.random.randint(0,high=3,size=N)
+
+for i in range(N):
+    puertas = [0, 1, 2]
+    ## Vuelta 1 ##
+    #El participante tiene su primer elección
+    #El presentador abre una puerta que no es ni la elección del participante ni la que tiene el auto
+    puertas.remove(
+
+    ## Vuelta 2.1 mantiene ##
+    #El presentador pregunta al participante si mantiene su elección o si cambiamos
+
+    ## Vuelta 2.2 cambia ##
+    #El presentador pregunta al participante si mantiene su elección o si cambiamos
